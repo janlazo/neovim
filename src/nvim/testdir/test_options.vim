@@ -436,3 +436,19 @@ func Test_shortmess_F2()
   bwipe
   bwipe
 endfunc
+
+func Test_backupskip()
+  if has("mac")
+    call assert_match('/private/tmp/\*', &bsk)
+  elseif has("unix")
+    call assert_match('/tmp/\*', &bsk)
+  endif
+
+  let bskvalue = substitute(&bsk, '\\', '/', 'g')
+  for var in  ['$TEMPDIR', '$TMP', '$TEMP']
+    if exists(var)
+      let varvalue = substitute(expand(var), '\\', '/', 'g')
+      call assert_match(varvalue . '.\*', bskvalue)
+    endif
+  endfor
+endfunc

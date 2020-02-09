@@ -129,7 +129,7 @@ static const int included_patches[] = {
   1792,
   1791,
   1790,
-  // 1789,
+  1789,
   1788,
   1787,
   1786,

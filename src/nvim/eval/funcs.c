@@ -10126,7 +10126,7 @@ static void f_strptime(typval_T *argvars, typval_T *rettv, FunPtr fptr)
     fmt = (char *)string_convert(&conv, (char_u *)fmt, NULL);
   }
   if (fmt == NULL
-      || strptime(str, fmt, &tmval) == NULL
+      || os_strptime(str, fmt, &tmval) == NULL
       || (rettv->vval.v_number = mktime(&tmval)) == -1) {
     rettv->vval.v_number = 0;
   }

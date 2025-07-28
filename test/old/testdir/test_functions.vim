@@ -2834,12 +2834,10 @@ func Test_call()
 
   " These once caused a crash.
   call call(v:_null_function, [])
-  " Nvim doesn't have null partials
-  " call call(test_null_partial(), [])
+  call call(v:_null_partial, [])
   " Nvim doesn't have null functions
   " call assert_fails('call test_null_function()()', 'E1192:')
-  " Nvim doesn't have null partials
-  " call assert_fails('call test_null_partial()()', 'E117:')
+  call assert_fails('call v:_null_partial()', 'E117:')
 
   let lines =<< trim END
       let Time = 'localtime'

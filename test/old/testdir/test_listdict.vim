@@ -1049,8 +1049,7 @@ func Test_reduce()
 
   " should not crash
   call assert_fails('echo reduce([1], v:_null_function)', 'E1132:')
-  " Nvim doesn't have null partials
-  " call assert_fails('echo reduce([1], test_null_partial())', 'E1132:')
+  call assert_fails('echo reduce([1], v:_null_partial)', 'E1132:')
 endfunc
 
 " splitting a string to a List using split()

@@ -418,7 +418,7 @@ func Test_findfunc()
   delfunc FindFuncWithThrow
 
   " Try using a null function
-  "call assert_fails('let &findfunc = test_null_function()', 'E129: Function name required')
+  call assert_fails('let &findfunc = v:_null_function', 'E129: Function name required')
 
   " Try to create a new window from the find function
   func FindFuncNewWindow(pat, cmdexpand)

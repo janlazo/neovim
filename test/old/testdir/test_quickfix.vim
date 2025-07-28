@@ -2464,8 +2464,7 @@ func Xproperty_tests(cchar)
     call g:Xsetlist([], 'a', {'context' : test_null_job()})
   endif
   call g:Xsetlist([], 'a', {'context' : v:_null_function})
-  " Nvim doesn't have null partials
-  " call g:Xsetlist([], 'a', {'context' : test_null_partial()})
+  call g:Xsetlist([], 'a', {'context' : v:_null_partial})
   call g:Xsetlist([], 'a', {'context' : ''})
   call test_garbagecollect_now()
   if a:cchar == 'l'

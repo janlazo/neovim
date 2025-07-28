@@ -297,8 +297,7 @@ func Test_execute_cmd_with_null()
   call assert_fails('execute v:_null_dict', 'E731:')
   call assert_fails('execute v:_null_blob', 'E976:')
   execute v:_null_string
-  " Nvim doesn't have null partials
-  " call assert_fails('execute test_null_partial()', 'E729:')
+  call assert_fails('execute v:_null_partial', 'E729:')
   call assert_fails('execute test_unknown()', 'E908:')
   if has('job')
     call assert_fails('execute test_null_job()', 'E908:')

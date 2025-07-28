@@ -84,8 +84,7 @@ func Test_op_falsy()
       call assert_equal(456, v:_null_list ?? 456)
       call assert_equal(456, v:_null_dict ?? 456)
       call assert_equal(456, v:_null_function ?? 456)
-      #" Nvim doesn't have null partials
-      #" call assert_equal(456, test_null_partial() ?? 456)
+      call assert_equal(456, v:_null_partial ?? 456)
       if has('job')
         call assert_equal(456, test_null_job() ?? 456)
       endif

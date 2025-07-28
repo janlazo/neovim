@@ -176,6 +176,7 @@ typedef enum {
   VV__NULL_FUNC,  // Function with NULL value. For test purposes only.
   VV__NULL_LIST,  // List with NULL value. For test purposes only.
   VV__NULL_DICT,  // Dict with NULL value. For test purposes only.
+  VV__NULL_PARTIAL, // Partial with NULL value. For test purposes only.
   VV__NULL_BLOB,  // Blob with NULL value. For test purposes only.
   VV_LUA,
   VV_RELNUM,

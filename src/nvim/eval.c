@@ -280,6 +280,7 @@ static struct vimvar {
   VV(VV__NULL_FUNC,       "_null_function",   VAR_FUNC, VV_RO),
   VV(VV__NULL_LIST,       "_null_list",       VAR_LIST, VV_RO),
   VV(VV__NULL_DICT,       "_null_dict",       VAR_DICT, VV_RO),
+  VV(VV__NULL_PARTIAL,    "_null_partial",    VAR_PARTIAL, VV_RO),
   VV(VV__NULL_BLOB,       "_null_blob",       VAR_BLOB, VV_RO),
   VV(VV_LUA,              "lua",              VAR_PARTIAL, VV_RO),
   VV(VV_RELNUM,           "relnum",           VAR_NUMBER, VV_RO),

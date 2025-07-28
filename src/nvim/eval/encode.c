@@ -376,8 +376,7 @@ int encode_read_from_list(ListReaderState *const state, char *const buf, const s
   do { \
     const char *const fun_ = (fun); \
     if (fun_ == NULL) { \
-      internal_error("string(): NULL function name"); \
-      ga_concat(gap, "function(NULL"); \
+      ga_concat(gap, "function(''"); \
     } else { \
       ga_concat(gap, "function("); \
       TYPVAL_ENCODE_CONV_STRING(tv, fun_, strlen(fun_)); \

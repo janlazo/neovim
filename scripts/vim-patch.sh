@@ -892,30 +892,31 @@ is_na_patch() {
   local NA_REGEXP="$NVIM_SOURCE_DIR/scripts/vim_na_regexp.txt"
   local NA_FILELIST="$NVIM_SOURCE_DIR/scripts/vim_na_files.txt"
 
-  local FILE_LNUM
+  local FILES_DIFF
   # shellcheck disable=SC2086
-  FILE_LNUM="$(diff <(git -C "${VIM_SOURCE_DIR}" diff-tree --no-commit-id --name-only -r "$patch" | grep -v -f "$NA_REGEXP") "$NA_FILELIST" |
-    grep -c '^<')" || FILE_LNUM=0
-  test "$FILE_LNUM" -gt 1 && return 1
-  if test "$FILE_LNUM" -eq 1; then
-    local VERSION_LNUM
-    VERSION_LNUM=$(git -C "${VIM_SOURCE_DIR}" log -1 --numstat --format= "$patch" -- src/version.c  | grep -c '^2\s\+0')
-    test "$VERSION_LNUM" -ne 1 && return 1
-    local VERSION_VNUM
-    VERSION_VNUM="$(git -C "${VIM_SOURCE_DIR}" log -1 -U1 --format="" "$patch" -- src/version.c |
-      grep -Pzc '[ +]\/\*\*\/\n\+\s+[0-9]+,\n[ +]\/\*\*\/\n')" || true
-    test "$VERSION_VNUM" -ne 1 && return 1
-  fi
+  FILES_DIFF="$(diff <(git -C "${VIM_SOURCE_DIR}" diff-tree --no-commit-id --name-only -r "$patch" | grep -v -f "$NA_REGEXP") "$NA_FILELIST" |
+    grep '^<')" || true
+  test -z "${FILES_DIFF}" && return 0
+  test "$(echo "${FILES_DIFF}" | grep -v -c '< src/version\.c')" -gt 0 && return 1
+  local VERSION_LNUM
+  VERSION_LNUM=$(git -C "${VIM_SOURCE_DIR}" log -1 --numstat --format= "$patch" -- src/version.c  | grep -c '^2\s\+0')
+  test "$VERSION_LNUM" -ne 1 && return 1
+  local VERSION_VNUM
+  VERSION_VNUM="$(git -C "${VIM_SOURCE_DIR}" log -1 -U1 --format="" "$patch" -- src/version.c |
+    grep -Pzc '[ +]\/\*\*\/\n\+\s+[0-9]+,\n[ +]\/\*\*\/\n')"
+  test "$VERSION_VNUM" -ne 1 && return 1
   return 0
 }
 
 list_na_patches() {
   list_missing_vimpatches 0 | while read -r patch; do
     if is_na_patch "$patch"; then
-      if (echo "$patch" | grep -q '^v[0-9]'); then
-        echo "vim-patch:$(git -C "${VIM_SOURCE_DIR}" log -1 --pretty=format:%s "$patch" | sed 's/^patch //')"
+      GIT_MSG="$(git -C "${VIM_SOURCE_DIR}" log -1 --oneline "$patch")"
+      if (echo "$patch" | grep -q '^v[0-9]\.[0-9]\.[0-9]') && (echo "${GIT_MSG}" | grep -q ' patch [0-9]\.'); then
+        # shellcheck disable=SC2001
+        echo "vim-patch:$(echo "${GIT_MSG}" | sed 's/^[0-9a-zA-Z]\+ patch //')"
       else
-        echo "vim-patch:$(git -C "${VIM_SOURCE_DIR}" log -1 --oneline "$patch")"
+        echo "vim-patch:${GIT_MSG}"
       fi
     fi
   done
